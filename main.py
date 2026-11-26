@@ -76,6 +76,12 @@ def main():
         print("error: entry.txt on disk differs from the entry",
               file=sys.stderr)
         return 1
+    # Byte length must match the character length encoded as UTF-8,
+    # so a silent encoding change cannot slip past the gate.
+    if len(on_disk.encode("utf-8")) != len(line.encode("utf-8")):
+        print("error: entry.txt byte length does not match the entry",
+              file=sys.stderr)
+        return 1
 
     print("wrote %s (%d characters)" % (path, len(line)))
     return 0
